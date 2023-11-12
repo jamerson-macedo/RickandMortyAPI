@@ -13,6 +13,7 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object RemoteModule {
+    // instancia do retrofit
     @Provides
     @Singleton
     fun provideRickMortyApi(): RickAndMortyAPI {
