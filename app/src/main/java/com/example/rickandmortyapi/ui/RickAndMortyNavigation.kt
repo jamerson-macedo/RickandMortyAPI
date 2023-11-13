@@ -4,14 +4,15 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
 
 sealed class Screen(val route: String) {
-    object Home : Screen("home")
-    object Detail : Screen("detail?id={id}") {
+    // definindo nossa rota
+    object Home: Screen("home")
+    object Detail: Screen("detail?id={id}") {
         fun passId(id: Int): String {
             return "detail?id=$id"
         }
     }
 }
-
+// configurando nossas rotas
 class RickAndMortyActions(navController: NavController) {
     val navigateToHome: () -> Unit = {
         navController.navigate(Screen.Home.route) {
@@ -22,8 +23,9 @@ class RickAndMortyActions(navController: NavController) {
             restoreState = true
         }
     }
-    val navegationToDetail = { id: Int ->
-        navController.navigate(Screen.Detail.passId(id)){
+// passando o id do item clicado
+    val navigateToDetail = { id: Int ->
+        navController.navigate(Screen.Detail.passId(id)) {
             popUpTo(navController.graph.findStartDestination().id) {
                 saveState = true
             }

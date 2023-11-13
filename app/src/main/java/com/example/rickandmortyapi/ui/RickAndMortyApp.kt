@@ -9,10 +9,16 @@ import com.example.rickandmortyapi.ui.theme.RickAndMortyAPITheme
 @Composable
 fun RickAndMortyApp() {
     RickAndMortyAPITheme {
+        // configuramos o controler
         val navController = rememberNavController()
         val navigationActions= remember(navController) {
+            // nossas acoes com o navigation
             RickAndMortyActions(navController)
         }
-        RickAndMortyNavGraph()
+        RickAndMortyNavGraph(
+            navController = navController,
+            navigateToHome = navigationActions.navigateToHome,
+            navigateToDetail = navigationActions.navigateToDetail
+        )
     }
 }

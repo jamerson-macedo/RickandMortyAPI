@@ -16,24 +16,29 @@ import javax.inject.Inject
 class CharacterRepositoryImplementation @Inject constructor(
     private val api: RickAndMortyAPI
 ) : CharacterRepository {
-    override fun getCharacters(page: Int): Flow<Result<List<Characters>>> = flow {
+    override fun getCharacters(page: Int): Flow<Result<List<Characters>>> = flow{
         emit(Result.Loading())
         try {
             val response = api.getCharacters(page).TolistCharacters()
             emit(Result.Success(response))
         } catch (e: HttpException) {
-            emit(Result.Error(e.message.toString(), null))
-        }catch (io:IOException){
-            emit(Result.Error(io.message.toString(), null))
-
+            emit(Result.Error(
+                message = "Oops, something went wrong",
+                data = null
+            ))
+        } catch (e: IOException) {
+            emit(Result.Error(
+                message = "Couldn't reach server, check your internet connection",
+                data = null
+            ))
         }
     }
 
     override suspend fun getCharacter(id: Int): Result<Character> {
-        val response=try {
+        val response = try {
             api.getCharacter(id)
-        }catch (e:Exception){
-            return Result.Error(e.message.toString(),null)
+        } catch (e: Exception) {
+            return Result.Error("An unknown error occurred")
         }
         return Result.Success(response.ToCharacter())
     }
